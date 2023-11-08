@@ -13,7 +13,7 @@
     "universe/web",
     "universe/shared/typescript-analysis"
   ],
-  "parser": "babel-eslint",
+  "parser": "@babel/eslint-parser",
   "env": {
     "browser": true
   },
