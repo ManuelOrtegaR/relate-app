@@ -7,24 +7,24 @@ import { z } from 'zod';
 import globalStyles from '../App.styles.ts';
 import TouchButton from '../components/TouchButton.tsx';
 import Separator from '../components/Separator.tsx';
+import { SignUpScreenProps } from '../types.ts';
 
 const signUpSchema = z.object({
-  username: z.string(),
+  nickname: z.string(),
   email: z.string().email(),
   password: z.string().min(6).max(16),
 });
 
 const initialValues = {
-  username: '',
+  nickname: '',
   email: '',
   password: '',
 };
 
-export const SignUp = () => {
+export const SignUp: React.FC<SignUpScreenProps> = ({ navigation }) => {
   return (
     <View style={globalStyles.container}>
       <Text style={globalStyles.h1}>Welcome</Text>
-
       <Formik
         initialValues={initialValues}
         onSubmit={async (values, { setSubmitting }) => {
@@ -48,14 +48,14 @@ export const SignUp = () => {
               style={[
                 globalStyles.input,
                 globalStyles.space,
-                touched.username && errors.username && globalStyles.inputError,
+                touched.nickname && errors.nickname && globalStyles.inputError,
               ]}
               autoCapitalize="none"
-              autoComplete="username"
+              autoComplete="nickname"
               placeholder="Username"
-              onChangeText={handleChange('username')}
-              onBlur={handleBlur('username')}
-              value={values.username}
+              onChangeText={handleChange('nickname')}
+              onBlur={handleBlur('nickname')}
+              value={values.nickname}
             />
             <TextInput
               style={[
@@ -102,12 +102,7 @@ export const SignUp = () => {
           size={32}
           color="red"
         />
-        <FontAwesome5
-          style={{ marginRight: 20 }}
-          name="fingerprint"
-          size={32}
-          color="black"
-        />
+        <FontAwesome5 name="fingerprint" size={32} color="black" />
       </View>
       <View style={[globalStyles.wrapper, globalStyles.space]}>
         <Separator text="or" />
@@ -117,7 +112,7 @@ export const SignUp = () => {
         <TouchButton
           title="Sign In"
           variant="secondary"
-          // onPress={() => navigation.navigate('Sign In')}
+          onPress={() => navigation.navigate('Sign In')}
         />
       </View>
     </View>

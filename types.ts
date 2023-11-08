@@ -1,3 +1,18 @@
+import { NativeStackScreenProps } from "@react-navigation/native-stack"
+
+export type RootStackParamList = {
+  "Welcome": undefined,
+  "Sign In": undefined,
+  "Sign Up": undefined,
+  "Home": undefined
+  "Rooms": undefined
+  "Profile": undefined
+}
+
+export type SignUpScreenProps = NativeStackScreenProps<RootStackParamList, 'Sign Up'>
+export type SignInScreenProps = NativeStackScreenProps<RootStackParamList, 'Sign In'>
+export type WelcomeScreenProps = NativeStackScreenProps<RootStackParamList, 'Welcome'>
+
 export type UserLogged = {
   picture: string,
   birthdate: string,

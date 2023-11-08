@@ -1,5 +1,6 @@
 import React from 'react';
 import { Text, View } from 'react-native';
+import { EvilIcons } from '@expo/vector-icons';
 
 import globalStyles from '../App.styles.ts';
 

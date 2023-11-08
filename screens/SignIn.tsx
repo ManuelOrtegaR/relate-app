@@ -9,6 +9,7 @@ import globalStyles from '../App.styles.ts';
 
 import TouchButton from '../components/TouchButton.tsx';
 import Separator from '../components/Separator.tsx';
+import { SignInScreenProps } from '../types.ts';
 
 const signInSchema = z.object({
   email: z.string().email(),
@@ -20,7 +21,7 @@ const initialValues = {
   password: '',
 };
 
-export const SignIn = () => {
+export const SignIn: React.FC<SignInScreenProps> = ({ navigation }) => {
   //const { setUser } = useContext(UserContext);
   return (
     <View style={globalStyles.container}>
@@ -93,12 +94,7 @@ export const SignIn = () => {
           size={32}
           color="red"
         />
-        <FontAwesome5
-          style={{ marginRight: 20 }}
-          name="fingerprint"
-          size={32}
-          color="black"
-        />
+        <FontAwesome5 name="fingerprint" size={32} color="black" />
       </View>
       <View style={[globalStyles.wrapper, globalStyles.space]}>
         <Separator text="or" />
@@ -108,7 +104,7 @@ export const SignIn = () => {
         <TouchButton
           title="Sign Up"
           variant="secondary"
-          //onPress={() => navigation.navigate('Sign Up')}
+          onPress={() => navigation.navigate('Home')}
         />
       </View>
     </View>

@@ -3,8 +3,9 @@ import { Text, View } from 'react-native';
 import globalStyles from '../App.styles.ts';
 import TouchButton from '../components/TouchButton.tsx';
 import Separator from '../components/Separator.tsx';
+import { WelcomeScreenProps } from '../types.ts';
 
-export const Welcome = () => {
+export const Welcome: React.FC<WelcomeScreenProps> = ({ navigation }) => {
   return (
     <View style={globalStyles.container}>
       <Text style={globalStyles.h1}>Welcome to Relate</Text>
@@ -12,7 +13,7 @@ export const Welcome = () => {
       <View style={[globalStyles.wrapper]}>
         <TouchButton
           title="Sign Up"
-          //onPress={() => navigation.navigate('Sign Up')}
+          onPress={() => navigation.navigate('Sign Up')}
         />
       </View>
       <View style={[globalStyles.wrapper, globalStyles.space]}>
@@ -23,7 +24,7 @@ export const Welcome = () => {
         <TouchButton
           title="Sign In"
           variant="secondary"
-          //onPress={() => navigation.navigate('Sign In')}
+          onPress={() => navigation.navigate('Sign In')}
         />
       </View>
     </View>
