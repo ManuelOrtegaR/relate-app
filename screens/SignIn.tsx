@@ -4,12 +4,16 @@ import { useContext } from 'react';
 import { Image, Text, TextInput, View } from 'react-native';
 import { toFormikValidationSchema } from 'zod-formik-adapter';
 import { z } from 'zod';
+import { signInWithEmailAndPassword, getAuth } from 'firebase/auth';
+import { initializeApp } from 'firebase/app';
+import { firebaseConfig } from '../firebase-config.ts';
 
 import globalStyles from '../App.styles.ts';
 
 import TouchButton from '../components/TouchButton.tsx';
 import Separator from '../components/Separator.tsx';
 import { SignInScreenProps } from '../types.ts';
+import { signIn } from '../api/auth/index.ts';
 
 const signInSchema = z.object({
   email: z.string().email(),
@@ -21,7 +25,9 @@ const initialValues = {
   password: '',
 };
 
-export const SignIn: React.FC<SignInScreenProps> = ({ navigation }) => {
+export const SignIn: React.FC<SignInScreenProps> = (props) => {
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
   //const { setUser } = useContext(UserContext);
   return (
     <View style={globalStyles.container}>
@@ -29,13 +35,20 @@ export const SignIn: React.FC<SignInScreenProps> = ({ navigation }) => {
       <Formik
         initialValues={initialValues}
         onSubmit={async (values, { setSubmitting }) => {
-          console.log(values);
-          // const user = await signIn(values);
-          // setUser(user);
-          // navigation.reset({
-          //   index: 0,
-          //   routes: [{ name: 'Home' }],
-          // });
+          const firebaseResponse = await signInWithEmailAndPassword(
+            auth,
+            values.email,
+            values.password,
+          );
+
+          const firebaseUid = firebaseResponse.user.uid;
+          const { data: apiResponse } = await signIn({ firebaseUid });
+          console.log(apiResponse);
+          //setUser(user);
+          props.navigation.reset({
+            index: 0,
+            routes: [{ name: 'Home' }],
+          });
         }}
         validationSchema={toFormikValidationSchema(signInSchema)}
       >
@@ -104,7 +117,7 @@ export const SignIn: React.FC<SignInScreenProps> = ({ navigation }) => {
         <TouchButton
           title="Sign Up"
           variant="secondary"
-          onPress={() => navigation.navigate('Home')}
+          onPress={() => props.navigation.navigate('Sign Up')}
         />
       </View>
     </View>

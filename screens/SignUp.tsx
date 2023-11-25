@@ -3,11 +3,15 @@ import { Image, Text, TextInput, View } from 'react-native';
 import { AntDesign, FontAwesome5 } from '@expo/vector-icons';
 import { toFormikValidationSchema } from 'zod-formik-adapter';
 import { z } from 'zod';
+import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
+import { initializeApp } from 'firebase/app';
+import { firebaseConfig } from '../firebase-config.ts';
 
 import globalStyles from '../App.styles.ts';
 import TouchButton from '../components/TouchButton.tsx';
 import Separator from '../components/Separator.tsx';
-import { SignUpScreenProps } from '../types.ts';
+import { SignUpBody, SignUpScreenProps } from '../types.ts';
+import { signUp } from '../api/auth/index.ts';
 
 const signUpSchema = z.object({
   nickname: z.string(),
@@ -21,16 +25,35 @@ const initialValues = {
   password: '',
 };
 
-export const SignUp: React.FC<SignUpScreenProps> = ({ navigation }) => {
+export const SignUp: React.FC<SignUpScreenProps> = (props) => {
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
   return (
     <View style={globalStyles.container}>
       <Text style={globalStyles.h1}>Welcome</Text>
       <Formik
         initialValues={initialValues}
         onSubmit={async (values, { setSubmitting }) => {
-          console.log(values);
-          //await signUp(values);
-          //navigation.navigate('Sign In');
+          try {
+            const firebaseResponse = await createUserWithEmailAndPassword(
+              auth,
+              values.email,
+              values.password,
+            );
+
+            const body: SignUpBody = {
+              nickname: values.nickname,
+              email: values.email,
+              birthdate: '28/06/1992',
+              firebaseUid: firebaseResponse.user.uid,
+            };
+            await signUp(body);
+            props.navigation.navigate('Sign In');
+          } catch (error) {
+            // TODO: make alret or error message
+            console.log(error);
+          }
         }}
         validationSchema={toFormikValidationSchema(signUpSchema)}
       >
@@ -112,7 +135,7 @@ export const SignUp: React.FC<SignUpScreenProps> = ({ navigation }) => {
         <TouchButton
           title="Sign In"
           variant="secondary"
-          onPress={() => navigation.navigate('Sign In')}
+          onPress={() => props.navigation.navigate('Sign In')}
         />
       </View>
     </View>
