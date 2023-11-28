@@ -1,7 +1,6 @@
 import { Formik } from 'formik';
-import { AntDesign, FontAwesome5 } from '@expo/vector-icons';
 import { useContext } from 'react';
-import { Image, Text, TextInput, View } from 'react-native';
+import { Image, Text, View } from 'react-native';
 import { toFormikValidationSchema } from 'zod-formik-adapter';
 import { z } from 'zod';
 import { signInWithEmailAndPassword, getAuth } from 'firebase/auth';
@@ -10,10 +9,10 @@ import { firebaseConfig } from '../firebase-config.ts';
 
 import globalStyles from '../App.styles.ts';
 
-import TouchButton from '../components/TouchButton.tsx';
-import Separator from '../components/Separator.tsx';
 import { SignInScreenProps } from '../types.ts';
 import { signIn } from '../api/auth/index.ts';
+import { Button, TextInput, useTheme, HelperText } from 'react-native-paper';
+import { GestureResponderEvent } from 'react-native';
 
 const signInSchema = z.object({
   email: z.string().email(),
@@ -26,12 +25,20 @@ const initialValues = {
 };
 
 export const SignIn: React.FC<SignInScreenProps> = (props) => {
+  const theme = useTheme();
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
   //const { setUser } = useContext(UserContext);
   return (
-    <View style={globalStyles.container}>
-      <Text style={globalStyles.h1}>Welcome Back</Text>
+    <View style={[globalStyles.container, { justifyContent: 'space-between' }]}>
+      <Image
+        source={require('../assets/background-chat-icon.png')}
+        style={globalStyles.backgroundImage}
+      />
+      <Image
+        source={require('../assets/logo-relate.png')}
+        style={{ marginTop: 100 }}
+      />
       <Formik
         initialValues={initialValues}
         onSubmit={async (values, { setSubmitting }) => {
@@ -61,65 +68,79 @@ export const SignIn: React.FC<SignInScreenProps> = (props) => {
           handleSubmit,
           isSubmitting,
         }) => (
-          <View style={[globalStyles.wrapper]}>
+          <View style={[globalStyles.wrapper, { marginTop: 50 }]}>
             <TextInput
-              style={[
-                globalStyles.input,
-                globalStyles.space,
-                touched.email && errors.email && globalStyles.inputError,
-              ]}
-              autoCapitalize="none"
-              autoComplete="email"
-              placeholder="Email"
+              mode="flat"
+              label="Correo electrónico"
+              placeholder="Escriba su correo electrónico"
               onChangeText={handleChange('email')}
               onBlur={handleBlur('email')}
+              autoCapitalize="none"
+              autoComplete="email"
               value={values.email}
+              error={errors.email ? true : false}
+              style={{
+                backgroundColor: theme.colors.surface,
+              }}
             />
+            <HelperText
+              type="error"
+              style={{ fontSize: 15, fontWeight: 'bold', textAlign: 'right' }}
+              visible={errors.email && touched.email ? true : false}
+            >
+              Correo inválido
+            </HelperText>
             <TextInput
-              style={[
-                globalStyles.input,
-                globalStyles.space,
-                touched.password && errors.password && globalStyles.inputError,
-              ]}
+              mode="flat"
               secureTextEntry
-              placeholder="Password"
+              label="Contraseña"
+              placeholder="Escriba su contraseña"
               onChangeText={handleChange('password')}
               onBlur={handleBlur('password')}
               value={values.password}
+              error={errors.password && touched.password ? true : false}
+              style={{
+                backgroundColor: theme.colors.surface,
+              }}
             />
-            <TouchButton title="Sign In" onPress={handleSubmit} />
+            <HelperText
+              type="error"
+              style={{ fontSize: 15, fontWeight: 'bold', textAlign: 'right' }}
+              visible={errors.password && touched.password ? true : false}
+            >
+              Contraseña inválida
+            </HelperText>
+            <Button
+              icon="login"
+              mode="contained"
+              loading={isSubmitting}
+              contentStyle={{ height: 50 }}
+              labelStyle={{ fontSize: 20 }}
+              style={{ marginBottom: 20 }}
+              onPress={
+                handleSubmit as unknown as (e: GestureResponderEvent) => void
+              }
+            >
+              Iniciar sesión
+            </Button>
           </View>
         )}
       </Formik>
-      <View style={[globalStyles.wrapper, globalStyles.space]}>
-        <Separator text="Sign in with" />
-      </View>
-      <View style={[globalStyles.space, { flexDirection: 'row' }]}>
-        <AntDesign
-          style={{ marginRight: 20 }}
-          name="facebook-square"
-          size={32}
-          color="dodgerblue"
-        />
-        <AntDesign
-          style={{ marginRight: 20 }}
-          name="google"
-          size={32}
-          color="red"
-        />
-        <FontAwesome5 name="fingerprint" size={32} color="black" />
-      </View>
-      <View style={[globalStyles.wrapper, globalStyles.space]}>
-        <Separator text="or" />
-      </View>
-      <Text style={globalStyles.space}>Do you want to create an account?</Text>
-      <View style={[globalStyles.wrapper]}>
-        <TouchButton
-          title="Sign Up"
-          variant="secondary"
-          onPress={() => props.navigation.navigate('Sign Up')}
-        />
-      </View>
+      <Text
+        style={[
+          globalStyles.space,
+          {
+            color: 'white',
+            fontSize: 20,
+            fontWeight: 'bold',
+            marginBottom: 30,
+            textDecorationLine: 'underline',
+          },
+        ]}
+        onPress={() => props.navigation.navigate('Welcome')}
+      >
+        Regresar al menú
+      </Text>
     </View>
   );
 };

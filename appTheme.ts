@@ -1,0 +1,53 @@
+
+
+export const appTheme = {
+  light: {
+    primary: 'rgba(15, 48, 71, 1)',
+    onPrimary: 'rgb(255, 255, 255)',
+    primaryContainer: 'rgb(204, 229, 255)',
+    onPrimaryContainer: 'rgb(0, 30, 49)',
+    secondary: 'rgb(81, 96, 111)',
+    onSecondary: 'rgb(255, 255, 255)',
+    secondaryContainer: 'rgb(212, 228, 246)',
+    onSecondaryContainer: 'rgb(13, 29, 42)',
+    tertiary: 'rgba(198, 58, 50, 1)',
+    onTertiary: 'rgb(255, 255, 255)',
+    tertiaryContainer: 'rgb(255, 218, 214)',
+    onTertiaryContainer: 'rgb(65, 0, 2)',
+    error: 'rgb(186, 26, 26)',
+    onError: 'rgb(255, 255, 255)',
+    errorContainer: 'rgb(255, 218, 214)',
+    onErrorContainer: 'rgb(65, 0, 2)',
+    background: 'rgba(255, 122, 23, 1)',
+    onBackground: 'rgb(255, 255, 255)',
+    surface: 'rgb(252, 252, 255)',
+    onSurface: 'rgb(26, 28, 30)',
+    surfaceVariant: 'rgb(222, 227, 235)',
+    onSurfaceVariant: 'rgb(66, 71, 78)',
+    outline: 'rgb(114, 120, 126)',
+    outlineVariant: 'rgb(194, 199, 206)',
+    shadow: 'rgb(0, 0, 0)',
+    scrim: 'rgb(0, 0, 0)',
+    inverseSurface: 'rgb(47, 49, 51)',
+    inverseOnSurface: 'rgb(240, 240, 244)',
+    inversePrimary: 'rgb(146, 204, 255)',
+    elevation: {
+      level0: 'transparent',
+      level1: 'rgb(239, 244, 250)',
+      level2: 'rgb(232, 240, 247)',
+      level3: 'rgb(224, 235, 244)',
+      level4: 'rgb(222, 234, 243)',
+      level5: 'rgb(217, 231, 240)'
+    },
+    surfaceDisabled: 'rgba(26, 28, 30, 0.12)',
+    onSurfaceDisabled: 'rgba(26, 28, 30, 0.38)',
+    backdrop: 'rgba(43, 49, 55, 0.4)',
+    backgroundContainer: 'rgb(255, 219, 201)',
+    onBackgroundContainer: 'rgb(51, 18, 0)',
+    white: 'rgb(252, 252, 255)',
+    onWhite: 'rgb(26, 28, 30)',
+    whiteVariant: 'rgb(222, 227, 235)',
+    onWhiteVariant: 'rgb(66, 71, 78)',
+  }
+}
+

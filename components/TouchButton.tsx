@@ -7,6 +7,7 @@ export default function TouchButton({
   title = '',
   onPress = () => {},
   variant = 'primary',
+  width = '100%',
 }) {
   return (
     <TouchableOpacity
@@ -14,6 +15,7 @@ export default function TouchButton({
         globalStyles.button,
         globalStyles[variant].background,
         globalStyles.space,
+        { width },
       ]}
       onPress={onPress}
     >

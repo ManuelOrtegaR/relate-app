@@ -1,9 +1,21 @@
 import { StyleSheet } from 'react-native';
 
+const colorSchema = {
+  primary: "#FF7A17",
+  secondary: "#C63A32",
+  info: "#0F3047",
+  info_light: "#1A6396",
+  light: "#F4C05F",
+  white: "#FFFBE4",
+  gray: "#474747",
+  dark: "#C63A3280"
+}
+
+
 const styles = StyleSheet.create<any>({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: colorSchema.primary,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -28,6 +40,10 @@ const styles = StyleSheet.create<any>({
       resizeMode: 'contain',
     },
   },
+  backgroundImage: {
+    position: 'absolute',
+    alignSelf: 'flex-start',
+  },
   h1: {
     fontSize: 24,
     fontWeight: 'bold',
@@ -35,24 +51,27 @@ const styles = StyleSheet.create<any>({
     marginTop: 16,
   },
   button: {
-    borderRadius: 12,
+    borderRadius: 50,
     padding: 12,
-    width: '100%',
   },
   input: {
-    borderWidth: 1,
-    borderColor: 'lightgray',
-    borderRadius: 12,
+    backgroundColor: colorSchema.white,
+    borderWidth: 2,
+    borderColor: colorSchema.white,
+    borderRadius: 50,
     fontSize: 16,
     padding: 12,
     width: '100%',
+    textAlign: 'center',
   },
   inputError: {
     borderColor: 'red',
   },
   primary: {
     background: {
-      backgroundColor: 'chocolate',
+      backgroundColor: colorSchema.info,
+      borderWidth: 2,
+      borderColor: colorSchema.info,
     },
     text: {
       color: 'white',
@@ -62,18 +81,49 @@ const styles = StyleSheet.create<any>({
   },
   secondary: {
     background: {
-      backgroundColor: 'white',
-      borderWidth: 1,
-      borderColor: 'gray',
+      borderWidth: 2,
+      borderColor: colorSchema.white,
     },
     text: {
-      color: 'gray',
+      color: colorSchema.white,
+      fontSize: 16,
+      textAlign: 'center',
+    },
+  },
+  facebook: {
+    background: {
+      backgroundColor: colorSchema.info_light,
+      borderWidth: 2,
+      borderColor: colorSchema.info_light,
+    },
+    text: {
+      color: colorSchema.white,
+      fontSize: 16,
+      textAlign: 'center',
+    },
+  },
+  google: {
+    background: {
+      backgroundColor: colorSchema.white,
+      borderWidth: 2,
+      borderColor: colorSchema.white,
+    },
+    text: {
+      color: colorSchema.gray,
       fontSize: 16,
       textAlign: 'center',
     },
   },
   colors: {
-    primary: 'chocolate',
+    background: "#FF7A17",
+    primary: '#FF7A17',
+    secondary: "#C63A32",
+    info: "#0F3047",
+    info_light: "#1A6396",
+    light: "#F4C05F",
+    white: "#FFFBE4",
+    gray: "#474747",
+    dark: "#C63A3280"
   },
 });
 

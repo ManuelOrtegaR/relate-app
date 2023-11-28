@@ -8,12 +8,14 @@ export type RootStackParamList = {
   "Home": undefined
   "Rooms": undefined
   "Profile": undefined
+  "On Boarding": undefined
 }
 
 export type SignUpScreenProps = NativeStackScreenProps<RootStackParamList, 'Sign Up'>
 export type SignInScreenProps = NativeStackScreenProps<RootStackParamList, 'Sign In'>
 export type WelcomeScreenProps = NativeStackScreenProps<RootStackParamList, 'Welcome'>
 export type ProfileScreenProps = BottomTabScreenProps<RootStackParamList, 'Profile'>
+export type OnBoardingScreenProps = BottomTabScreenProps<RootStackParamList, 'On Boarding'>
 
 export type UserLogged = {
   picture: string,
