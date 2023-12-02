@@ -46,9 +46,12 @@ export const Welcome: React.FC<WelcomeScreenProps> = (props) => {
           </Button>
           <Button
             icon="pencil"
-            mode="contained"
+            mode="outlined"
             contentStyle={{ height: 50 }}
-            labelStyle={{}}
+            labelStyle={{
+              color: globalStyles.colors.white,
+            }}
+            style={{ borderColor: globalStyles.colors.white }}
             onPress={() => props.navigation.navigate('Sign Up')}
           >
             Registrarme

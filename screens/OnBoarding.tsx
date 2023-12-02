@@ -29,7 +29,7 @@ export const OnBoarding: React.FC<OnBoardingScreenProps> = (props) => {
           color: globalStyles.colors.white,
           fontSize: 20,
         }}
-        onPress={() => props.navigation.navigate('Home')}
+        onPress={() => props.navigation.navigate('Nickname')}
         style={{ alignSelf: 'flex-end', marginTop: 50, marginRight: 20 }}
       >
         Cerrar
@@ -53,7 +53,7 @@ export const OnBoarding: React.FC<OnBoardingScreenProps> = (props) => {
           }}
           onPress={() => {
             if (step === 1) {
-              props.navigation.navigate('Home');
+              props.navigation.navigate('Nickname');
             }
             setStep(step + 0.3);
           }}

@@ -5,17 +5,21 @@ export type RootStackParamList = {
   "Welcome": undefined,
   "Sign In": undefined,
   "Sign Up": undefined,
-  "Home": undefined
-  "Rooms": undefined
-  "Profile": undefined
-  "On Boarding": undefined
+  "Home": undefined,
+  "Rooms": undefined,
+  "Profile": undefined,
+  "On Boarding": undefined,
+  "Nickname": undefined,
+  "Avatar": characterInfo
 }
 
 export type SignUpScreenProps = NativeStackScreenProps<RootStackParamList, 'Sign Up'>
 export type SignInScreenProps = NativeStackScreenProps<RootStackParamList, 'Sign In'>
 export type WelcomeScreenProps = NativeStackScreenProps<RootStackParamList, 'Welcome'>
+export type OnBoardingScreenProps = NativeStackScreenProps<RootStackParamList, 'On Boarding'>
+export type NicknameScreenProps = NativeStackScreenProps<RootStackParamList, 'Nickname'>
+export type AvatarScreenProps = NativeStackScreenProps<RootStackParamList, 'Avatar'>
 export type ProfileScreenProps = BottomTabScreenProps<RootStackParamList, 'Profile'>
-export type OnBoardingScreenProps = BottomTabScreenProps<RootStackParamList, 'On Boarding'>
 
 export type UserLogged = {
   picture: string,
@@ -40,4 +44,13 @@ export type SignUpBody = {
   email: string,
   birthdate: string,
   firebaseUid: string
+}
+
+export type characterInfo = {
+  name: string,
+  description: string,
+  nationality: string,
+  gender: string,
+  age: string,
+  language: string,
 }

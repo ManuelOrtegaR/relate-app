@@ -18,6 +18,8 @@ import { Profile } from './screens/Profile';
 import { RootStackParamList } from './types';
 import { Home } from './screens/Home';
 import { OnBoarding } from './screens/OnBoarding.tsx';
+import { Nickname } from './screens/Nickname.tsx';
+import { Avatar } from './screens/Avatar.tsx';
 
 SplashScreen.preventAutoHideAsync();
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -80,6 +82,20 @@ export default function App() {
           <Stack.Screen
             name="On Boarding"
             component={OnBoarding}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="Nickname"
+            component={Nickname}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="Avatar"
+            component={Avatar}
             options={{
               headerShown: false,
             }}

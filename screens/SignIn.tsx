@@ -80,7 +80,7 @@ export const SignIn: React.FC<SignInScreenProps> = (props) => {
               value={values.email}
               error={errors.email ? true : false}
               style={{
-                backgroundColor: theme.colors.surface,
+                backgroundColor: globalStyles.colors.white,
               }}
             />
             <HelperText
@@ -100,7 +100,7 @@ export const SignIn: React.FC<SignInScreenProps> = (props) => {
               value={values.password}
               error={errors.password && touched.password ? true : false}
               style={{
-                backgroundColor: theme.colors.surface,
+                backgroundColor: globalStyles.colors.white,
               }}
             />
             <HelperText
