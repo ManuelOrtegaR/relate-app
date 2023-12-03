@@ -7,8 +7,7 @@ export async function setSession(payload: unknown) {
   if (typeof payload === 'object') {
     data = JSON.stringify(payload);
   }
-
-  await AsyncStorage.setItem(KEY, String(data));
+  await AsyncStorage.setItem(KEY, String(data))
 }
 
 export async function getSession() {
@@ -17,6 +16,7 @@ export async function getSession() {
   if (data && typeof data === 'object') {
     data = JSON.parse(data);
   }
+  console.log(data)
 
   return data;
 }

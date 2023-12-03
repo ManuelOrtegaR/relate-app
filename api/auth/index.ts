@@ -1,3 +1,4 @@
+import { signInWithGoogle } from '../../firebase/providers';
 import { SignUpBody } from '../../types';
 import http from '../http';
 //import { setSession } from '../session';
@@ -59,3 +60,17 @@ export async function signUp(payload: SignUpBody) {
 //     return Promise.reject(error);
 //   }
 // }
+
+
+// export const checkingAuthentication = () => {
+//   return checkingCredentials()
+// };
+
+// export const startGoogleSignIn = async () => {
+
+//   checkingCredentials()
+//   const result = await signInWithGoogle();
+
+//   if (!result.ok) return onLogout();
+//   //onLogin(result);
+// };

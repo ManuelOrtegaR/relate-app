@@ -1,5 +1,6 @@
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs"
 import { NativeStackScreenProps } from "@react-navigation/native-stack"
+import { AuthRequestPromptOptions } from "expo-auth-session"
 
 export type RootStackParamList = {
   "Welcome": undefined,
@@ -10,16 +11,22 @@ export type RootStackParamList = {
   "Profile": undefined,
   "On Boarding": undefined,
   "Nickname": undefined,
-  "Avatar": characterInfo
+  "Avatar": characterInfo,
+  "Lists": undefined,
+  "Chat": undefined
 }
 
-export type SignUpScreenProps = NativeStackScreenProps<RootStackParamList, 'Sign Up'>
 export type SignInScreenProps = NativeStackScreenProps<RootStackParamList, 'Sign In'>
+export type SignUpScreenProps = NativeStackScreenProps<RootStackParamList, 'Sign Up'>
 export type WelcomeScreenProps = NativeStackScreenProps<RootStackParamList, 'Welcome'>
 export type OnBoardingScreenProps = NativeStackScreenProps<RootStackParamList, 'On Boarding'>
 export type NicknameScreenProps = NativeStackScreenProps<RootStackParamList, 'Nickname'>
 export type AvatarScreenProps = NativeStackScreenProps<RootStackParamList, 'Avatar'>
+export type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'Home'>
 export type ProfileScreenProps = BottomTabScreenProps<RootStackParamList, 'Profile'>
+export type RoomsScreenProps = BottomTabScreenProps<RootStackParamList, 'Rooms'>
+export type ListsScreenProps = BottomTabScreenProps<RootStackParamList, 'Lists'>
+export type ChatScreenProps = BottomTabScreenProps<RootStackParamList, 'Chat'>
 
 export type UserLogged = {
   picture: string,

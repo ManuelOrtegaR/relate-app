@@ -17,6 +17,7 @@ import {
 import { GestureResponderEvent } from 'react-native';
 import DropdownSelect from 'react-native-input-select';
 import React from 'react';
+import { fakerES_MX as faker } from '@faker-js/faker';
 
 const nicknameSchema = z.object({
   name: z.string(),
@@ -69,7 +70,7 @@ export const Nickname: React.FC<NicknameScreenProps> = (props) => {
             color: globalStyles.colors.light,
             fontWeight: 'bold',
             marginBottom: 30,
-            marginTop: 50,
+            marginTop: 100,
           }}
         >
           Para una mejor experiencia,{' '}
@@ -80,7 +81,11 @@ export const Nickname: React.FC<NicknameScreenProps> = (props) => {
             describenos quien quieres ser
           </Text>
         </Text>
-        <ScrollView style={{ width: '100%' }}>
+        <ScrollView
+          style={{ width: '100%', marginLeft: 30 }}
+          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
+        >
           <Formik
             initialValues={initialValues}
             onSubmit={async (values, { setSubmitting }) => {
@@ -96,6 +101,7 @@ export const Nickname: React.FC<NicknameScreenProps> = (props) => {
               handleBlur,
               handleSubmit,
               isSubmitting,
+              setValues,
             }) => (
               <View style={[globalStyles.wrapper]}>
                 <TextInput
@@ -169,7 +175,7 @@ export const Nickname: React.FC<NicknameScreenProps> = (props) => {
                   mode="flat"
                   label="Edad del personaje"
                   keyboardType="number-pad"
-                  placeholder="21"
+                  placeholder="Ej: 28"
                   onChangeText={handleChange('age')}
                   onBlur={handleBlur('age')}
                   value={values.age}
@@ -197,6 +203,9 @@ export const Nickname: React.FC<NicknameScreenProps> = (props) => {
                     { label: 'Otro', value: 'other' },
                   ]}
                   selectedValue={values.gender}
+                  placeholderStyle={{
+                    color: genderError ? theme.colors.error : undefined,
+                  }}
                   dropdownStyle={{
                     backgroundColor: globalStyles.colors.white,
                     borderTopRightRadius: 5,
@@ -206,8 +215,11 @@ export const Nickname: React.FC<NicknameScreenProps> = (props) => {
                     borderTopWidth: 0,
                     borderLeftWidth: 0,
                     borderRightWidth: 0,
+                    borderBottomWidth: genderError ? 2 : undefined,
+                    borderColor: genderError ? theme.colors.error : undefined,
                   }}
                   onValueChange={(value: string) => {
+                    setGenderError(false);
                     values.gender = value;
                   }}
                   primaryColor={theme.colors.primary}
@@ -232,6 +244,9 @@ export const Nickname: React.FC<NicknameScreenProps> = (props) => {
                     { label: 'Frances', value: 'FR' },
                   ]}
                   selectedValue={values.language}
+                  placeholderStyle={{
+                    color: languageError ? theme.colors.error : undefined,
+                  }}
                   dropdownStyle={{
                     backgroundColor: globalStyles.colors.white,
                     borderTopRightRadius: 5,
@@ -241,8 +256,11 @@ export const Nickname: React.FC<NicknameScreenProps> = (props) => {
                     borderTopWidth: 0,
                     borderLeftWidth: 0,
                     borderRightWidth: 0,
+                    borderBottomWidth: languageError ? 2 : undefined,
+                    borderColor: languageError ? theme.colors.error : undefined,
                   }}
                   onValueChange={(value: string) => {
+                    setLanguageError(false);
                     values.language = value;
                   }}
                   primaryColor={theme.colors.primary}
@@ -264,6 +282,9 @@ export const Nickname: React.FC<NicknameScreenProps> = (props) => {
                   isSearchable
                   options={countries}
                   selectedValue={values.nationality}
+                  placeholderStyle={{
+                    color: nationalityError ? theme.colors.error : undefined,
+                  }}
                   dropdownStyle={{
                     backgroundColor: globalStyles.colors.white,
                     borderTopRightRadius: 5,
@@ -273,8 +294,13 @@ export const Nickname: React.FC<NicknameScreenProps> = (props) => {
                     borderTopWidth: 0,
                     borderLeftWidth: 0,
                     borderRightWidth: 0,
+                    borderBottomWidth: nationalityError ? 2 : undefined,
+                    borderColor: nationalityError
+                      ? theme.colors.error
+                      : undefined,
                   }}
                   onValueChange={(value: string) => {
+                    setNationalityError(false);
                     values.nationality = value;
                   }}
                   primaryColor={theme.colors.primary}
@@ -304,7 +330,33 @@ export const Nickname: React.FC<NicknameScreenProps> = (props) => {
                       alignSelf: 'center',
                     },
                   ]}
-                  onPress={() => {}}
+                  onPress={() => {
+                    const name = faker.internet.displayName();
+                    const description =
+                      faker.person.jobTitle() + faker.person.jobDescriptor();
+                    const age = faker.number
+                      .int({ min: 18, max: 90 })
+                      .toString();
+                    const gender = faker.helpers.arrayElement([
+                      'male',
+                      'female',
+                      'other',
+                    ]);
+                    const language = faker.helpers.arrayElement([
+                      'ES',
+                      'EN',
+                      'FR',
+                    ]);
+                    const nationality =
+                      faker.helpers.arrayElement(countries).value;
+                    setValues(
+                      { name, description, age, gender, language, nationality },
+                      true,
+                    );
+                    setGenderError(false);
+                    setLanguageError(false);
+                    setNationalityError(false);
+                  }}
                 >
                   Generar aleatorio
                 </Text>
@@ -313,13 +365,28 @@ export const Nickname: React.FC<NicknameScreenProps> = (props) => {
                   icon="check"
                   mode="contained"
                   loading={isSubmitting}
+                  style={{ marginBottom: 50 }}
                   contentStyle={{ height: 50 }}
                   labelStyle={{ fontSize: 20 }}
-                  onPress={
-                    handleSubmit as unknown as (
-                      e: GestureResponderEvent,
-                    ) => void
-                  }
+                  onPress={() => {
+                    if (values.gender === '' || values.gender === null) {
+                      setGenderError(true);
+                    }
+                    if (values.language === '' || values.language === null) {
+                      setLanguageError(true);
+                    }
+                    if (
+                      values.nationality === '' ||
+                      values.nationality === null
+                    ) {
+                      setNationalityError(true);
+                    }
+                    if (!genderError && !languageError && !nationalityError) {
+                      handleSubmit() as unknown as (
+                        e: GestureResponderEvent,
+                      ) => void;
+                    }
+                  }}
                 >
                   Continuar
                 </Button>

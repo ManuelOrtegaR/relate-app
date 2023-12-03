@@ -4,7 +4,7 @@ import { toFormikValidationSchema } from 'zod-formik-adapter';
 import { z } from 'zod';
 import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
 import { initializeApp } from 'firebase/app';
-import { firebaseConfig } from '../firebase-config.ts';
+import { FirebaseAuth, firebaseConfig } from '../firebase/firebase-config.ts';
 
 import globalStyles from '../App.styles.ts';
 import { SignUpBody, SignUpScreenProps } from '../types.ts';
@@ -25,8 +25,6 @@ const initialValues = {
 
 export const SignUp: React.FC<SignUpScreenProps> = (props) => {
   const theme = useTheme();
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
 
   return (
     <View style={[globalStyles.container, { justifyContent: 'space-between' }]}>
@@ -43,7 +41,7 @@ export const SignUp: React.FC<SignUpScreenProps> = (props) => {
         onSubmit={async (values, { setSubmitting }) => {
           try {
             const firebaseResponse = await createUserWithEmailAndPassword(
-              auth,
+              FirebaseAuth,
               values.email,
               values.password,
             );

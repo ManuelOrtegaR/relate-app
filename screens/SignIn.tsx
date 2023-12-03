@@ -3,9 +3,15 @@ import { useContext } from 'react';
 import { Image, Text, View } from 'react-native';
 import { toFormikValidationSchema } from 'zod-formik-adapter';
 import { z } from 'zod';
-import { signInWithEmailAndPassword, getAuth } from 'firebase/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {
+  signInWithEmailAndPassword,
+  getAuth,
+  getReactNativePersistence,
+  initializeAuth,
+} from 'firebase/auth';
 import { initializeApp } from 'firebase/app';
-import { firebaseConfig } from '../firebase-config.ts';
+import { FirebaseAuth, firebaseConfig } from '../firebase/firebase-config.ts';
 
 import globalStyles from '../App.styles.ts';
 
@@ -26,9 +32,7 @@ const initialValues = {
 
 export const SignIn: React.FC<SignInScreenProps> = (props) => {
   const theme = useTheme();
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  //const { setUser } = useContext(UserContext);
+  //TODO: Si existe character pasa al home si no al onboarding const { setUser } = useContext(UserContext);
   return (
     <View style={[globalStyles.container, { justifyContent: 'space-between' }]}>
       <Image
@@ -43,7 +47,7 @@ export const SignIn: React.FC<SignInScreenProps> = (props) => {
         initialValues={initialValues}
         onSubmit={async (values, { setSubmitting }) => {
           const firebaseResponse = await signInWithEmailAndPassword(
-            auth,
+            FirebaseAuth,
             values.email,
             values.password,
           );

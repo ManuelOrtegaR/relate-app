@@ -3,7 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { PaperProvider } from 'react-native-paper';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
-import { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { MD3LightTheme as DefaultTheme } from 'react-native-paper';
 
 import * as SplashScreen from 'expo-splash-screen';
@@ -21,31 +21,9 @@ import { OnBoarding } from './screens/OnBoarding.tsx';
 import { Nickname } from './screens/Nickname.tsx';
 import { Avatar } from './screens/Avatar.tsx';
 
-SplashScreen.preventAutoHideAsync();
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
-  const [appIsReady, setAppIsReady] = useState(false);
-
-  useEffect(() => {
-    async function prepare() {
-      try {
-        await new Promise((resolve) => setTimeout(resolve, 2000));
-      } catch (e) {
-        console.warn(e);
-      } finally {
-        setAppIsReady(true);
-        await SplashScreen.hideAsync();
-      }
-    }
-
-    prepare();
-  }, []);
-
-  if (!appIsReady) {
-    return null;
-  }
-
   const theme = {
     ...DefaultTheme,
     // Specify custom property

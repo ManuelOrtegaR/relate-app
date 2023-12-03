@@ -202,7 +202,8 @@ export const Avatar: React.FC<AvatarScreenProps> = (props) => {
           style={{
             color: globalStyles.colors.light,
             fontWeight: 'bold',
-            marginBottom: 50,
+            marginTop: 30,
+            marginBottom: 10,
           }}
         >
           Ahora,{' '}
@@ -216,12 +217,13 @@ export const Avatar: React.FC<AvatarScreenProps> = (props) => {
         <Formik
           initialValues={initialValues}
           onSubmit={async (values, { setSubmitting }) => {
-            console.log(values);
             const characterData = {
               info: characterInfo,
               avatar: values,
             };
             console.log({ characterData });
+            // TODO: post to create character
+            props.navigation.navigate('Home');
           }}
           validationSchema={toFormikValidationSchema(avatarSchema)}
         >
@@ -230,16 +232,16 @@ export const Avatar: React.FC<AvatarScreenProps> = (props) => {
               <Image
                 source={faces[values.face].sprite}
                 style={{
-                  width: 250,
-                  height: 300,
+                  width: 200,
+                  height: 250,
                   alignSelf: 'center',
                 }}
               />
               <Image
                 source={hairs[values.hair].sprite}
                 style={{
-                  width: 250,
-                  height: 300,
+                  width: 200,
+                  height: 250,
                   alignSelf: 'center',
                   position: 'absolute',
                 }}
@@ -247,8 +249,8 @@ export const Avatar: React.FC<AvatarScreenProps> = (props) => {
               <Image
                 source={eyes[values.eye].sprite}
                 style={{
-                  width: 250,
-                  height: 300,
+                  width: 200,
+                  height: 250,
                   alignSelf: 'center',
                   position: 'absolute',
                 }}
@@ -256,8 +258,8 @@ export const Avatar: React.FC<AvatarScreenProps> = (props) => {
               <Image
                 source={noses[values.nose].sprite}
                 style={{
-                  width: 250,
-                  height: 300,
+                  width: 200,
+                  height: 250,
                   alignSelf: 'center',
                   position: 'absolute',
                 }}
@@ -265,8 +267,8 @@ export const Avatar: React.FC<AvatarScreenProps> = (props) => {
               <Image
                 source={mouths[values.mouth].sprite}
                 style={{
-                  width: 250,
-                  height: 300,
+                  width: 200,
+                  height: 250,
                   alignSelf: 'center',
                   position: 'absolute',
                 }}
@@ -474,7 +476,7 @@ export const Avatar: React.FC<AvatarScreenProps> = (props) => {
                     fontSize: 20,
                     fontWeight: 'bold',
                     marginTop: 10,
-                    marginBottom: 30,
+                    marginBottom: 50,
                     textDecorationLine: 'underline',
                     alignSelf: 'center',
                   },
@@ -500,7 +502,6 @@ export const Avatar: React.FC<AvatarScreenProps> = (props) => {
                 Generar aleatorio
               </Text>
               <Button
-                icon="check"
                 mode="contained"
                 loading={isSubmitting}
                 contentStyle={{ height: 50 }}
@@ -509,7 +510,7 @@ export const Avatar: React.FC<AvatarScreenProps> = (props) => {
                   handleSubmit as unknown as (e: GestureResponderEvent) => void
                 }
               >
-                Continuar
+                Todo listo
               </Button>
             </View>
           )}
