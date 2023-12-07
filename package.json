@@ -39,7 +39,8 @@
     "expo-crypto": "~12.4.1",
     "expo-web-browser": "~12.3.2",
     "expo-application": "~5.3.0",
-    "expo-dev-client": "~2.4.12"
+    "expo-dev-client": "~2.4.12",
+    "expo-random": "~13.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

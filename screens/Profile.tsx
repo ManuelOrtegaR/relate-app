@@ -5,15 +5,13 @@ import globalStyles from '../App.styles.ts';
 import TouchButton from '../components/TouchButton.tsx';
 import { ProfileScreenProps } from '../types.ts';
 import { useUserStore } from '../store/userStore.ts';
-import { signOut } from 'firebase/auth';
-import { FirebaseAuth } from '../firebase/firebase-config.ts';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useGoogleAuth } from '../firebase/google.provider.ts';
 
 export const Profile: React.FC<ProfileScreenProps> = (props) => {
+  const { googleSignOut } = useGoogleAuth();
   const { onLogin, onLogout, data } = useUserStore();
   async function onSignOut() {
-    await signOut(FirebaseAuth);
-    await AsyncStorage.removeItem('@user');
+    googleSignOut();
     props.navigation.reset({
       index: 0,
       routes: [{ name: 'Welcome' }],
@@ -55,7 +53,7 @@ export const Profile: React.FC<ProfileScreenProps> = (props) => {
               },
               meta: {
                 token: 'tokende prueba',
-                logged: false,
+                logged: 'no-authenticated',
               },
             });
           }}

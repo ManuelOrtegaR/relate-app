@@ -2,63 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { Text, View, Image } from 'react-native';
 import globalStyles from '../App.styles.ts';
 import { WelcomeScreenProps } from '../types.ts';
-import TouchButtonWithIcon from '../components/TouchButtonWithIcon.tsx';
 import { ActivityIndicator, Button } from 'react-native-paper';
-import {
-  GoogleAuthProvider,
-  signInWithCredential,
-  onAuthStateChanged,
-} from 'firebase/auth';
 import * as WebBrowser from 'expo-web-browser';
-import * as Google from 'expo-auth-session/providers/google.js';
-import { FirebaseAuth } from '../firebase/firebase-config.ts';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useGoogleAuth } from '../firebase/google.provider.ts';
 
 WebBrowser.maybeCompleteAuthSession();
 
 export const Welcome: React.FC<WelcomeScreenProps> = (props) => {
-  const [userInfo, setUserInfo] = useState({});
-  const [loading, setLoading] = useState(false);
-  const [request, response, promptAsync] = Google.useAuthRequest({
-    androidClientId:
-      '503380554468-m5051l8ka5gt6qdq1taml9c95kh9nsdi.apps.googleusercontent.com',
-  });
-
-  useEffect(() => {
-    if (response?.type === 'success') {
-      const { id_token } = response.params;
-      const credential = GoogleAuthProvider.credential(id_token);
-      signInWithCredential(FirebaseAuth, credential);
-    }
-  }, [response]);
-
-  const getLocalUser = async () => {
-    try {
-      setLoading(true);
-      const userJSON = await AsyncStorage.getItem('@user');
-      console.log(userJSON);
-      const userData = userJSON ? JSON.parse(userJSON) : null;
-      setUserInfo(userData);
-    } catch (error) {
-      console.log(error, 'Error gettin local user');
-    } finally {
-      setLoading(false);
-    }
+  const { promptAsync, loading, userInfo } = useGoogleAuth();
+  const onGoogleSignin = async () => {
+    promptAsync();
   };
-
-  useEffect(() => {
-    getLocalUser();
-    const unsub = onAuthStateChanged(FirebaseAuth, async (user) => {
-      if (user) {
-        await AsyncStorage.setItem('@user', JSON.stringify(user));
-        setUserInfo(user);
-        console.log(JSON.stringify(user, null, 2));
-      } else {
-        console.log('user not authenticated');
-      }
-    });
-    return () => unsub();
-  }, []);
 
   return (
     <View style={[globalStyles.container, { justifyContent: 'space-between' }]}>
@@ -157,9 +111,7 @@ export const Welcome: React.FC<WelcomeScreenProps> = (props) => {
                   fontSize: 20,
                   color: globalStyles.colors.gray,
                 }}
-                onPress={() => {
-                  promptAsync();
-                }}
+                onPress={onGoogleSignin}
               >
                 Continuar con Google
               </Button>

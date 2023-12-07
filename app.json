@@ -30,6 +30,6 @@
         "projectId": "f9b945b8-5309-4c3c-a2e2-879de9cd40ee"
       }
     },
-    "scheme": "relate-app"
+    "scheme": ["relate-app", "fb1809172216184404"]
   }
 }

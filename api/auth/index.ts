@@ -1,4 +1,4 @@
-import { signInWithGoogle } from '../../firebase/providers';
+import { signInWithGoogle } from '../../firebase/google.provider';
 import { SignUpBody } from '../../types';
 import http from '../http';
 //import { setSession } from '../session';
