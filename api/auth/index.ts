@@ -8,6 +8,7 @@ export const signIn = async ({ firebaseUid }: { firebaseUid: string }) => {
     const { data: response } = await http.post('/auth/signin', { firebaseUid });
     const data = await decodeUserOutput(response);
     const { token = '' } = data.meta;
+    console.log('JWT', token)
     setSession(token);
     setUser(data.data)
     return { data };

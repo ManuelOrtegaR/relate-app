@@ -18,13 +18,13 @@ export default function App() {
   };
 
   return (
-    <PaperProvider theme={theme}>
-      <TanStackProvider>
+    <TanStackProvider>
+      <PaperProvider theme={theme}>
         <NavigationContainer>
           <AppStack />
           <StatusBar style="auto" />
         </NavigationContainer>
-      </TanStackProvider>
-    </PaperProvider>
+      </PaperProvider>
+    </TanStackProvider>
   );
 }
