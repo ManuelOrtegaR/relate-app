@@ -223,7 +223,10 @@ export const Avatar: React.FC<AvatarScreenProps> = (props) => {
             };
             console.log({ characterData });
             // TODO: post to create character
-            props.navigation.navigate('Home');
+            props.navigation.reset({
+              index: 0,
+              routes: [{ name: 'Home' }],
+            });
           }}
           validationSchema={toFormikValidationSchema(avatarSchema)}
         >

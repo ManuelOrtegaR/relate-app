@@ -1,11 +1,11 @@
 import React from 'react';
-import { Text } from 'react-native';
 import { View } from 'react-native';
 import globalStyles from '../App.styles.ts';
 import TouchButton from '../components/TouchButton.tsx';
 import { ProfileScreenProps } from '../types.ts';
 import { useUserStore } from '../store/userStore.ts';
 import { useGoogleAuth } from '../firebase/google.provider.ts';
+import { Button, Divider, Icon, Text } from 'react-native-paper';
 
 export const Profile: React.FC<ProfileScreenProps> = (props) => {
   const { googleSignOut } = useGoogleAuth();
@@ -18,11 +18,152 @@ export const Profile: React.FC<ProfileScreenProps> = (props) => {
     });
   }
   return (
-    <View
-      style={[globalStyles.container, globalStyles.top, { paddingTop: 12 }]}
-    >
-      <View style={globalStyles.wrapper}>
-        <TouchButton title="Sign Out" onPress={onSignOut} />
+    <View style={[globalStyles.container, { backgroundColor: 'white' }]}>
+      <View style={{ width: '90%' }}>
+        <Button
+          icon="chevron-right"
+          mode="text"
+          onPress={() => console.log('Pressed')}
+          contentStyle={{
+            flexDirection: 'row-reverse',
+            justifyContent: 'space-between',
+          }}
+          labelStyle={{ fontWeight: 'bold', fontSize: 17 }}
+          style={{ marginBottom: 10 }}
+        >
+          Planes y suscripciones
+        </Button>
+        <Divider style={{ marginBottom: 10 }} />
+        <View style={{ marginLeft: 16, marginBottom: 10 }}>
+          <Text style={{ fontWeight: 'bold', fontSize: 17, marginBottom: 10 }}>
+            Mi Perfil
+          </Text>
+          <Button
+            icon="chevron-right"
+            mode="text"
+            onPress={() => props.navigation.navigate('Username')}
+            contentStyle={{
+              flexDirection: 'row-reverse',
+              justifyContent: 'space-between',
+            }}
+            labelStyle={{ fontSize: 17 }}
+          >
+            Nombre de usuario
+          </Button>
+          <Button
+            icon="chevron-right"
+            mode="text"
+            onPress={() => props.navigation.navigate('ProfilePhoto')}
+            contentStyle={{
+              flexDirection: 'row-reverse',
+              justifyContent: 'space-between',
+            }}
+            labelStyle={{ fontSize: 17 }}
+          >
+            Foto de perfil
+          </Button>
+          <Button
+            icon="chevron-right"
+            mode="text"
+            onPress={() => props.navigation.navigate('Characters')}
+            contentStyle={{
+              flexDirection: 'row-reverse',
+              justifyContent: 'space-between',
+            }}
+            labelStyle={{ fontSize: 17 }}
+          >
+            Avatares
+          </Button>
+        </View>
+        <Divider style={{ marginBottom: 10 }} />
+        <Button
+          icon="chevron-right"
+          mode="text"
+          onPress={() => props.navigation.navigate('Account')}
+          contentStyle={{
+            flexDirection: 'row-reverse',
+            justifyContent: 'space-between',
+          }}
+          labelStyle={{ fontWeight: 'bold', fontSize: 17 }}
+          style={{ marginBottom: 10 }}
+        >
+          Mi cuenta
+        </Button>
+        <Divider style={{ marginBottom: 10 }} />
+        <Button
+          icon="chevron-right"
+          mode="text"
+          onPress={() => console.log('Pressed')}
+          contentStyle={{
+            flexDirection: 'row-reverse',
+            justifyContent: 'space-between',
+          }}
+          labelStyle={{ fontWeight: 'bold', fontSize: 17 }}
+          style={{ marginBottom: 10 }}
+        >
+          Configurar notificaciones
+        </Button>
+        <Divider style={{ marginBottom: 10 }} />
+        <View style={{ marginLeft: 16, marginBottom: 150 }}>
+          <Text style={{ fontWeight: 'bold', fontSize: 17, marginBottom: 10 }}>
+            Legal
+          </Text>
+          <Button
+            icon="chevron-right"
+            mode="text"
+            onPress={() => console.log('Pressed')}
+            contentStyle={{
+              flexDirection: 'row-reverse',
+              justifyContent: 'space-between',
+            }}
+            labelStyle={{ fontSize: 17 }}
+          >
+            Ajustes de privacidad
+          </Button>
+          <Button
+            icon="chevron-right"
+            mode="text"
+            onPress={() => console.log('Pressed')}
+            contentStyle={{
+              flexDirection: 'row-reverse',
+              justifyContent: 'space-between',
+            }}
+            labelStyle={{ fontSize: 17 }}
+          >
+            Política de cookies
+          </Button>
+          <Button
+            icon="chevron-right"
+            mode="text"
+            onPress={() => console.log('Pressed')}
+            contentStyle={{
+              flexDirection: 'row-reverse',
+              justifyContent: 'space-between',
+            }}
+            labelStyle={{ fontSize: 17 }}
+          >
+            Política de privacidad
+          </Button>
+          <Button
+            icon="chevron-right"
+            mode="text"
+            onPress={() => console.log('Pressed')}
+            contentStyle={{
+              flexDirection: 'row-reverse',
+              justifyContent: 'space-between',
+            }}
+            labelStyle={{ fontSize: 17 }}
+          >
+            Términos y condiciones
+          </Button>
+        </View>
+      </View>
+    </View>
+  );
+};
+
+{
+  /* <TouchButton title="Sign Out" onPress={onSignOut} />
         <TouchButton
           title="pruebaborrar"
           onPress={() => {
@@ -57,8 +198,5 @@ export const Profile: React.FC<ProfileScreenProps> = (props) => {
               },
             });
           }}
-        />
-      </View>
-    </View>
-  );
-};
+        /> */
+}

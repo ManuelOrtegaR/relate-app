@@ -3,22 +3,17 @@ import { useContext } from 'react';
 import { Image, Text, View } from 'react-native';
 import { toFormikValidationSchema } from 'zod-formik-adapter';
 import { z } from 'zod';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {
-  signInWithEmailAndPassword,
-  getAuth,
-  getReactNativePersistence,
-  initializeAuth,
-} from 'firebase/auth';
 import { initializeApp } from 'firebase/app';
 import { FirebaseAuth, firebaseConfig } from '../firebase/firebase-config.ts';
 
 import globalStyles from '../App.styles.ts';
 
-import { SignInScreenProps } from '../types.ts';
 import { signIn } from '../api/auth/index.ts';
 import { Button, TextInput, useTheme, HelperText } from 'react-native-paper';
 import { GestureResponderEvent } from 'react-native';
+import { Login, useUserStore } from '../store/userStore.ts';
+import { useCredentials } from '../firebase/credentials.provider.ts';
+import { SignInScreenProps } from '../navigation/types.ts';
 
 const signInSchema = z.object({
   email: z.string().email(),
@@ -32,7 +27,11 @@ const initialValues = {
 
 export const SignIn: React.FC<SignInScreenProps> = (props) => {
   const theme = useTheme();
+  const store = useUserStore();
+  const { signInWithCredentials } = useCredentials();
+
   //TODO: Si existe character pasa al home si no al onboarding const { setUser } = useContext(UserContext);
+
   return (
     <View style={[globalStyles.container, { justifyContent: 'space-between' }]}>
       <Image
@@ -46,19 +45,26 @@ export const SignIn: React.FC<SignInScreenProps> = (props) => {
       <Formik
         initialValues={initialValues}
         onSubmit={async (values, { setSubmitting }) => {
-          const firebaseResponse = await signInWithEmailAndPassword(
-            FirebaseAuth,
-            values.email,
-            values.password,
-          );
+          const firebaseResponse = await signInWithCredentials({
+            email: values.email,
+            password: values.password,
+            nickname: '',
+          });
 
           const firebaseUid = firebaseResponse.user.uid;
           const { data: apiResponse } = await signIn({ firebaseUid });
-          console.log(apiResponse);
-          //setUser(user);
+          const payload: Login = {
+            user: apiResponse.data,
+            meta: {
+              token: apiResponse.meta.token,
+              logged: 'authenticated',
+            },
+          };
+          store.checkingCredentials();
+          store.onLogin(payload);
           props.navigation.reset({
             index: 0,
-            routes: [{ name: 'Home' }],
+            routes: [{ name: 'On Boarding' }],
           });
         }}
         validationSchema={toFormikValidationSchema(signInSchema)}

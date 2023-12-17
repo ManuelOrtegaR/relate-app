@@ -10,6 +10,7 @@ import globalStyles from '../App.styles.ts';
 import { SignUpBody, SignUpScreenProps } from '../types.ts';
 import { signUp } from '../api/auth/index.ts';
 import { Button, HelperText, TextInput, useTheme } from 'react-native-paper';
+import { useCredentials } from '../firebase/credentials.provider.ts';
 
 const signUpSchema = z.object({
   nickname: z.string(),
@@ -25,6 +26,7 @@ const initialValues = {
 
 export const SignUp: React.FC<SignUpScreenProps> = (props) => {
   const theme = useTheme();
+  const { createUserWithCredentials } = useCredentials();
 
   return (
     <View style={[globalStyles.container, { justifyContent: 'space-between' }]}>
@@ -40,19 +42,11 @@ export const SignUp: React.FC<SignUpScreenProps> = (props) => {
         initialValues={initialValues}
         onSubmit={async (values, { setSubmitting }) => {
           try {
-            const firebaseResponse = await createUserWithEmailAndPassword(
-              FirebaseAuth,
-              values.email,
-              values.password,
-            );
-
-            const body: SignUpBody = {
-              nickname: values.nickname,
+            const response = await createUserWithCredentials({
               email: values.email,
-              birthdate: '28/06/1992',
-              firebaseUid: firebaseResponse.user.uid,
-            };
-            await signUp(body);
+              password: values.password,
+              nickname: values.nickname,
+            });
             props.navigation.navigate('Sign In');
           } catch (error) {
             // TODO: make alret or error message

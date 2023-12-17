@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-export default function Separator({ text = '' }) {
+export default function Separator({ text = ' ' }) {
   return (
     <View style={styles.container}>
       <View style={styles.line}></View>

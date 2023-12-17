@@ -2,7 +2,7 @@ import axios from 'axios';
 import { clearSession, getSession } from './session';
 
 const instance = axios.create({
-  baseURL: process.env.EXPO_PUBLIC_API_URL,
+  baseURL: "http://192.168.20.27:3000/api",
 });
 
 instance.interceptors.request.use(

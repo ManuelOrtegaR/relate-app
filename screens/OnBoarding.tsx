@@ -9,7 +9,6 @@ import { OnBoardingSteps } from '../components/OnBoardingSteps.tsx';
 export const OnBoarding: React.FC<OnBoardingScreenProps> = (props) => {
   const deviceWidth = Dimensions.get('window').width;
   const theme = useTheme();
-
   const [step, setStep] = useState(0.4);
 
   return (

@@ -14,6 +14,7 @@ export const Home = () => {
   const theme = useTheme();
   return (
     <Tab.Navigator
+      initialRouteName={'Rooms'}
       screenOptions={({ route }) => ({
         tabBarLabelStyle: {
           color: globalStyles.colors.white,

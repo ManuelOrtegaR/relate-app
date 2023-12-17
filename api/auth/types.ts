@@ -14,6 +14,8 @@ export const UserData = z.object({
   picture: z.string(),
   suscription: z.boolean(),
   updatedAt: z.string().nullable(),
+  status: z.string(),
+  characters: z.any().nullable().optional()
 });
 
 export const UserOutput = z.object({

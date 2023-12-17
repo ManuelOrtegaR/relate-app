@@ -8,10 +8,16 @@ import {
   onAuthStateChanged,
   signOut,
 } from 'firebase/auth';
+import { clearSession, setGoogleUser, setSession, setUser } from '../api/session.ts';
+import { SignUpBody, UserInfo } from '../types.ts';
+import { signIn, signUp } from '../api/auth/index.ts';
+import { Login, useUserStore } from '../store/userStore.ts';
 
 export const useGoogleAuth = () => {
-  const [userInfo, setUserInfo] = useState({});
+  const [userInfo, setUserInfo] = useState();
   const [loading, setLoading] = useState(false);
+  const [logged, setLogged] = useState(false);
+  const store = useUserStore()
   const [request, response, promptAsync] = Google.useAuthRequest({
     androidClientId:
       '503380554468-m5051l8ka5gt6qdq1taml9c95kh9nsdi.apps.googleusercontent.com',
@@ -28,10 +34,9 @@ export const useGoogleAuth = () => {
   const getLocalUser = async () => {
     try {
       setLoading(true);
-      const userJSON = await AsyncStorage.getItem('@user');
-      console.log(userJSON);
-      const userData = userJSON ? JSON.parse(userJSON) : null;
-      setUserInfo(userData);
+      const userJSON = await AsyncStorage.getItem('@googleUser');
+      const userData: UserInfo = userJSON ? JSON.parse(userJSON) : null;
+      setUserInfo(userData as any);
     } catch (error) {
       console.log(error, 'Error gettin local user');
     } finally {
@@ -43,9 +48,33 @@ export const useGoogleAuth = () => {
     getLocalUser();
     const unsub = onAuthStateChanged(FirebaseAuth, async (user) => {
       if (user) {
-        await AsyncStorage.setItem('@user', JSON.stringify(user));
-        setUserInfo(user);
-        console.log(JSON.stringify(user, null, 2));
+        await AsyncStorage.setItem('@googleUser', JSON.stringify(user));
+        setUserInfo(user as any)
+
+        try {
+          const body: SignUpBody = {
+            nickname: user.displayName!,
+            email: user.email!,
+            birthdate: '28/06/1992',
+            firebaseUid: user.uid,
+          };
+          await signUp(body);
+        } catch (error) {
+          console.log(error);
+        } finally {
+          const { data: apiResponse } = await signIn({ firebaseUid: user.uid });
+          await setSession(apiResponse.meta.token)
+          const payload: Login = {
+            user: apiResponse.data,
+            meta: {
+              token: apiResponse.meta.token,
+              logged: 'authenticated',
+            },
+          };
+          store.checkingCredentials();
+          store.onLogin(payload);
+          setLogged(true)
+        }
       } else {
         console.log('user not authenticated');
       }
@@ -55,8 +84,10 @@ export const useGoogleAuth = () => {
 
   const googleSignOut = async () => {
     await signOut(FirebaseAuth);
-    await AsyncStorage.removeItem('@user');
+    setUserInfo(undefined);
+    setLogged(false)
+    await clearSession()
   }
 
-  return { promptAsync, loading, userInfo, googleSignOut }
+  return { promptAsync, loading, userInfo, googleSignOut, logged }
 }

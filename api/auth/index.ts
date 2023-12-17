@@ -1,20 +1,17 @@
-import { signInWithGoogle } from '../../firebase/google.provider';
 import { SignUpBody } from '../../types';
 import http from '../http';
-//import { setSession } from '../session';
+import { setSession, setUser } from '../session';
 import { decodeUserOutput } from './decoders';
 
 export const signIn = async ({ firebaseUid }: { firebaseUid: string }) => {
   try {
     const { data: response } = await http.post('/auth/signin', { firebaseUid });
-
     const data = await decodeUserOutput(response);
     const { token = '' } = data.meta;
-    // setSession(token);
-
+    setSession(token);
+    setUser(data.data)
     return { data };
   } catch (error) {
-    console.log(error)
     return Promise.reject(error);
   }
 }
