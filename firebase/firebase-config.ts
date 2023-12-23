@@ -1,6 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 
+
 export const firebaseConfig = {
   apiKey: 'AIzaSyCWFliVbq7k81Eydbzhb6V2QBrPknyYYPE',
   authDomain: 'relatanosapp.firebaseapp.com',

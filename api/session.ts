@@ -2,6 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const TOKEN_KEY = '@token';
 const USER_KEY = '@user'
 const GOOGLE_USER_KEY = '@googleUser'
+const SELECTED_CHARACTER = "@character"
 
 export async function setSession(payload: unknown): Promise<void> {
   let data = payload;
@@ -38,4 +39,16 @@ export async function getUser(): Promise<string | null> {
     data = JSON.parse(data);
   }
   return data;
+}
+
+export async function selectCharacter(payload: number): Promise<void> {
+  await AsyncStorage.setItem(SELECTED_CHARACTER, String(payload));
+}
+
+export async function getSelectedCharacter(): Promise<number> {
+  const data = await AsyncStorage.getItem(SELECTED_CHARACTER);
+  if (!data) {
+    return 0;
+  }
+  return parseInt(SELECTED_CHARACTER);
 }

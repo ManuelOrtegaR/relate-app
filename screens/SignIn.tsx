@@ -14,6 +14,7 @@ import { GestureResponderEvent } from 'react-native';
 import { Login, useUserStore } from '../store/userStore.ts';
 import { useCredentials } from '../firebase/credentials.provider.ts';
 import { SignInScreenProps } from '../navigation/types.ts';
+import { getMyUser } from '../api/user/index.ts';
 
 const signInSchema = z.object({
   email: z.string().email(),
@@ -62,10 +63,18 @@ export const SignIn: React.FC<SignInScreenProps> = (props) => {
           };
           store.checkingCredentials();
           store.onLogin(payload);
-          props.navigation.reset({
-            index: 0,
-            routes: [{ name: 'On Boarding' }],
-          });
+          const response = await getMyUser();
+          if (response.characters[0]) {
+            props.navigation.reset({
+              index: 0,
+              routes: [{ name: 'Home' }],
+            });
+          } else {
+            props.navigation.reset({
+              index: 0,
+              routes: [{ name: 'On Boarding' }],
+            });
+          }
         }}
         validationSchema={toFormikValidationSchema(signInSchema)}
       >

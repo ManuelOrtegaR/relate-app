@@ -2,16 +2,16 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Profile } from './Profile.tsx';
 import { Rooms } from './Rooms.tsx';
-import { RootStackParamList } from '../types.ts';
 import globalStyles from '../App.styles.ts';
 import { Icon, useTheme } from 'react-native-paper';
 import { Lists } from './Lists.tsx';
 import { Chat } from './Chat.tsx';
-import { View } from 'react-native';
+import { RootStackParamList } from '../navigation/types.ts';
 
 const Tab = createBottomTabNavigator<RootStackParamList>();
 export const Home = () => {
   const theme = useTheme();
+
   return (
     <Tab.Navigator
       initialRouteName={'Rooms'}

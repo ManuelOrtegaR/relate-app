@@ -10,54 +10,7 @@ import {
 } from 'react-native-paper';
 import { StarRating } from './StarRating';
 import globalStyles from '../App.styles.ts';
-
-const dataOnBoarding = [
-  {
-    id: '1',
-    name: 'Romance',
-    status: 'waiting',
-    language: 'Español',
-    players: 2,
-    stars: 5,
-    imgURL: require('../public/images/romance.png'),
-  },
-  {
-    id: '2',
-    name: 'Fantasia',
-    status: 'waiting',
-    language: 'Portugues',
-    players: 1,
-    stars: 4,
-    imgURL: require('../public/images/romance.png'),
-  },
-  {
-    id: '3',
-    name: 'Aventura',
-    status: 'in-game',
-    language: 'Ingles',
-    players: 3,
-    stars: 3,
-    imgURL: require('../public/images/romance.png'),
-  },
-  {
-    id: '4',
-    name: 'Accion',
-    status: 'waiting',
-    language: 'Frances',
-    players: 4,
-    stars: 2,
-    imgURL: require('../public/images/romance.png'),
-  },
-  {
-    id: '5',
-    name: 'Terror',
-    status: 'waiting',
-    language: 'Italiano',
-    players: 4,
-    stars: 1,
-    imgURL: require('../public/images/romance.png'),
-  },
-];
+import { dataOnBoarding } from '../mock/data.ts';
 
 export const OnBoardingRooms = () => {
   const theme = useTheme();

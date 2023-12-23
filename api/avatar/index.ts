@@ -1,12 +1,23 @@
+import { AvatarData } from '../character/types';
 import http from '../http';
-import { decodeUserOutput } from './decoders';
+import { decodeAllSpritesOutput, decodeGetAvatarOutput } from './decoders';
+import { AllSprites, AvatarUrls } from './types';
 
-export const getSprites = async () => {
+export const getAllSprites = async () => {
   try {
-    const { data: response } = await http.get('/auth/signin');
-    const data = await decodeUserOutput(response);
-    const { token = '' } = data.meta;
-    return { data };
+    const { data: response }: { data: AllSprites } = await http.get('/avatar');
+    const data = await decodeAllSpritesOutput(response);
+    return data;
+  } catch (error) {
+    return Promise.reject(error);
+  }
+}
+
+export const getAvatarSprites = async (payload: AvatarData) => {
+  try {
+    const { data: response }: { data: AvatarUrls } = await http.post('/avatar', payload);
+    const data = await decodeGetAvatarOutput(response);
+    return data;
   } catch (error) {
     return Promise.reject(error);
   }

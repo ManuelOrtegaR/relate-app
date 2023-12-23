@@ -13,12 +13,16 @@ import { z } from 'zod';
 import { toFormikValidationSchema } from 'zod-formik-adapter';
 import globalStyles from '../App.styles.ts';
 import DropdownSelect from 'react-native-input-select';
-import { countries as countriesData } from 'countries-list';
 import { faker } from '@faker-js/faker';
+import { useGameIds } from '../domain/useGameIds.ts';
+import { TFlatList } from 'react-native-input-select/lib/typescript/types/index.types';
+import { createRoom } from '../api/rooms/index.ts';
 
 interface Props {
   visible: boolean;
   hideModal: () => void;
+  characterId: string | undefined;
+  goToRoom: (values: any) => void;
 }
 
 export const CreateRoom = (props: Props) => {
@@ -26,25 +30,21 @@ export const CreateRoom = (props: Props) => {
   const [locationError, setLocationError] = React.useState(false);
   const [genderError, setGenderError] = React.useState(false);
   const [languageError, setLanguageError] = React.useState(false);
+  const { gameIds, error, isLoading } = useGameIds();
 
   const initialValues = {
-    turns: '',
-    language: '',
-    location: '',
-    litGenre: '',
+    turns: '3',
+    languageId: '',
+    locationId: '',
+    litGenreId: '',
   };
 
   const createRoomSchema = z.object({
     turns: z.enum(['3', '4', '5', '6', '7', '8', '9', '10']),
-    language: z.enum(['ES', 'EN', 'FR']),
-    location: z.string(),
-    litGenre: z.string(),
+    languageId: z.string(),
+    locationId: z.string(),
+    litGenreId: z.string(),
   });
-
-  const countries = Object.entries(countriesData).map(([code, country]) => ({
-    label: country.name,
-    value: code,
-  }));
 
   const containerStyle = { padding: 20 };
 
@@ -77,8 +77,19 @@ export const CreateRoom = (props: Props) => {
         <Formik
           initialValues={initialValues}
           onSubmit={async (values, { setSubmitting }) => {
-            console.log(values);
-            // props.navigation.navigate('Avatar', values);
+            if (!props.characterId) return;
+            try {
+              const info = {
+                ...values,
+                turns: parseInt(values.turns),
+                characterId: props.characterId,
+              };
+              const response = await createRoom(info);
+              props.goToRoom(response);
+              props.hideModal();
+            } catch (error) {
+              console.log(error);
+            }
           }}
           validationSchema={toFormikValidationSchema(createRoomSchema)}
         >
@@ -122,11 +133,13 @@ export const CreateRoom = (props: Props) => {
               <DropdownSelect
                 placeholder="Selecciona el género de la sala"
                 options={[
-                  { label: 'Fantasía', value: 'fantasy' },
-                  { label: 'Misterio', value: 'mistery' },
-                  { label: 'Comedia', value: 'comedy' },
+                  { label: 'Ficción', value: '653fe8dddc42d0b2ad0c4189' },
+                  { label: 'Misterio', value: '653fe8dbf25bc294846efae3' },
+                  { label: 'Horror', value: '653fe8d9d9165274b7dbcf74' },
+                  { label: 'Romance', value: '653fe8d6a6198d53ee0a40a1' },
+                  { label: 'Comedia', value: '653fe8d32e90d9522b8f4d8c' },
                 ]}
-                selectedValue={values.litGenre}
+                selectedValue={values.litGenreId}
                 placeholderStyle={{
                   color: genderError ? theme.colors.error : undefined,
                 }}
@@ -144,7 +157,7 @@ export const CreateRoom = (props: Props) => {
                 }}
                 onValueChange={(value: string) => {
                   setGenderError(false);
-                  values.litGenre = value;
+                  values.litGenreId = value;
                 }}
                 primaryColor={theme.colors.primary}
               />
@@ -162,12 +175,10 @@ export const CreateRoom = (props: Props) => {
               </HelperText>
               <DropdownSelect
                 placeholder="Selecciona el idioma de la sala"
-                options={[
-                  { label: 'Español', value: 'ES' },
-                  { label: 'Ingles', value: 'EN' },
-                  { label: 'Frances', value: 'FR' },
-                ]}
-                selectedValue={values.language}
+                options={gameIds?.language as unknown as TFlatList}
+                optionLabel={'language'}
+                optionValue={'id'}
+                selectedValue={values.languageId}
                 placeholderStyle={{
                   color: languageError ? theme.colors.error : undefined,
                 }}
@@ -185,7 +196,7 @@ export const CreateRoom = (props: Props) => {
                 }}
                 onValueChange={(value: string) => {
                   setLanguageError(false);
-                  values.language = value;
+                  values.languageId = value;
                 }}
                 primaryColor={theme.colors.primary}
               />
@@ -204,11 +215,11 @@ export const CreateRoom = (props: Props) => {
               <DropdownSelect
                 placeholder="Selecciona la ubicacion"
                 options={[
-                  { label: 'Playa', value: 'beach' },
-                  { label: 'Ciudad', value: 'city' },
-                  { label: 'Bosque', value: 'forest' },
+                  { label: 'Playa', value: '653fea2cf25b734351d0473c' },
+                  { label: 'Ciudad', value: '653fea29b3c8d3e8245ba0a9' },
+                  { label: 'Cueva', value: '653fea30c20f1935d465257c' },
                 ]}
-                selectedValue={values.location}
+                selectedValue={values.locationId}
                 placeholderStyle={{
                   color: locationError ? theme.colors.error : undefined,
                 }}
@@ -226,7 +237,7 @@ export const CreateRoom = (props: Props) => {
                 }}
                 onValueChange={(value: string) => {
                   setLocationError(false);
-                  values.location = value;
+                  values.locationId = value;
                 }}
                 primaryColor={theme.colors.primary}
               />
@@ -259,22 +270,25 @@ export const CreateRoom = (props: Props) => {
                   const turns = faker.number
                     .int({ min: 3, max: 10 })
                     .toString();
-                  const litGenre = faker.helpers.arrayElement([
-                    'fantasy',
-                    'mistery',
-                    'comedy',
+                  const litGenreId = faker.helpers.arrayElement([
+                    '653fe8d32e90d9522b8f4d8c',
+                    '653fe8d6a6198d53ee0a40a1',
+                    '653fe8d9d9165274b7dbcf74',
+                    '653fe8dbf25bc294846efae3',
+                    '653fe8dddc42d0b2ad0c4189',
                   ]);
-                  const language = faker.helpers.arrayElement([
-                    'ES',
-                    'EN',
-                    'FR',
+                  const languageId = faker.helpers.arrayElement(
+                    gameIds!.language,
+                  ).id;
+                  const locationId = faker.helpers.arrayElement([
+                    '653fea30c20f1935d465257c',
+                    '653fea2cf25b734351d0473c',
+                    '653fea29b3c8d3e8245ba0a9',
                   ]);
-                  const location = faker.helpers.arrayElement([
-                    'beach',
-                    'city',
-                    'forest',
-                  ]);
-                  setValues({ turns, litGenre, language, location }, true);
+                  setValues(
+                    { turns, litGenreId, languageId, locationId },
+                    true,
+                  );
                   setGenderError(false);
                   setLanguageError(false);
                   setLocationError(false);
@@ -290,13 +304,13 @@ export const CreateRoom = (props: Props) => {
                 contentStyle={{ height: 50 }}
                 labelStyle={{ fontSize: 20 }}
                 onPress={() => {
-                  if (values.litGenre === '' || values.litGenre === null) {
+                  if (values.litGenreId === '' || values.litGenreId === null) {
                     setGenderError(true);
                   }
-                  if (values.language === '' || values.language === null) {
+                  if (values.languageId === '' || values.languageId === null) {
                     setLanguageError(true);
                   }
-                  if (values.location === '' || values.location === null) {
+                  if (values.locationId === '' || values.locationId === null) {
                     setLocationError(true);
                   }
                   if (!genderError && !languageError && !locationError) {

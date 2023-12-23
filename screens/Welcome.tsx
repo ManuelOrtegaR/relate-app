@@ -1,39 +1,34 @@
 import React, { useEffect } from 'react';
 import { Text, View, Image } from 'react-native';
 import globalStyles from '../App.styles.ts';
-import { WelcomeScreenProps } from '../types.ts';
 import { ActivityIndicator, Button } from 'react-native-paper';
 import * as WebBrowser from 'expo-web-browser';
 import { useGoogleAuth } from '../firebase/google.provider.ts';
+import { WelcomeScreenProps } from '../navigation/types.ts';
+import { getMyUser } from '../api/user/index.ts';
 
 WebBrowser.maybeCompleteAuthSession();
 
 export const Welcome: React.FC<WelcomeScreenProps> = (props) => {
-  const { promptAsync, loading, userInfo, logged } = useGoogleAuth();
+  const { promptAsync, loading, logged } = useGoogleAuth();
   const onGoogleSignin = async () => {
     promptAsync();
-    // const payload: Login = {
-    //   user: apiResponse.data,
-    //   meta: {
-    //     token: apiResponse.meta.token,
-    //     logged: 'authenticated',
-    //   },
-    // };
-    // store.checkingCredentials();
-    // store.onLogin(payload);
-    // if (!loading) {
-    //   props.navigation.reset({
-    //     index: 0,
-    //     routes: [{ name: 'On Boarding' }],
-    //   });
-    // }
   };
 
   useEffect(() => {
     if (logged) {
-      props.navigation.reset({
-        index: 0,
-        routes: [{ name: 'On Boarding' }],
+      getMyUser().then((res) => {
+        if (res.characters[0]) {
+          props.navigation.reset({
+            index: 0,
+            routes: [{ name: 'Home' }],
+          });
+        } else {
+          props.navigation.reset({
+            index: 0,
+            routes: [{ name: 'On Boarding' }],
+          });
+        }
       });
     }
   }, [logged]);
